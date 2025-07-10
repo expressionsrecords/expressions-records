@@ -1,1 +1,168 @@
-<!DOCTYPE html><html><head><title>Expressions Records</title></head><body><h1>Site en construction</h1></body></html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expressions Records</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+    }
+    header {
+      padding: 20px;
+    }
+    header img {
+      width: 100px;
+      height: auto;
+    }
+    .socials a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    .vinyl-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      padding: 40px;
+    }
+    .vinyl {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: auto;
+    }
+    .vinyl img.vinyl-base {
+      width: 100%;
+      border-radius: 50%;
+      transition: transform 1s linear;
+    }
+    .vinyl img.cover {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80px;
+      height: 80px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+    .mix-title {
+      margin-top: 10px;
+    }
+    iframe {
+      display: none;
+    }
+    .rotating {
+      animation: spin 4s linear infinite;
+    }
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Black_circle.svg/1024px-Black_circle.svg.png" alt="Logo" />
+    <h1>Expressions Records</h1>
+    <div class="socials">
+      <a href="https://on.soundcloud.com/hejjdhuzxkUJvjUaA" target="_blank">SoundCloud</a>
+      <a href="https://www.instagram.com/expressionsrecords" target="_blank">Instagram</a>
+      <a href="https://youtube.com/@expressionsrecords" target="_blank">YouTube</a>
+    </div>
+  </header>
+
+  <div class="vinyl-grid">
+    <!-- Vinyls will be dynamically added here by JavaScript -->
+  </div>
+
+  <script>
+    const mixes = [
+      {
+        title: "Friedel Live",
+        url: "https://soundcloud.com/expressionrecords/expressions-invites-friedel-live",
+        cover: "https://i1.sndcdn.com/artworks-oMYowogDwTb7T19s-z5Zq6g-t500x500.jpg"
+      },
+      {
+        title: "Carolino",
+        url: "https://soundcloud.com/expressionrecords/expressions-invites-carolino",
+        cover: "https://i1.sndcdn.com/artworks-M0mYVRxZJNGM6vvl-kN3FbQ-t500x500.jpg"
+      },
+      {
+        title: "Jas",
+        url: "https://soundcloud.com/expressionrecords/expressions-invites-jas",
+        cover: "https://i1.sndcdn.com/artworks-0000jascover-t500x500.jpg"
+      },
+      {
+        title: "Sensis",
+        url: "https://soundcloud.com/expressionrecords/expressions-invites-sensis",
+        cover: "https://i1.sndcdn.com/artworks-0000sensiscover-t500x500.jpg"
+      },
+      {
+        title: "Flowinways",
+        url: "https://soundcloud.com/expressionrecords/expressions-invites-flowinways",
+        cover: "https://i1.sndcdn.com/artworks-0000flowincover-t500x500.jpg"
+      },
+      {
+        title: "Mandy3000",
+        url: "https://soundcloud.com/expressionrecords/mandy3000",
+        cover: "https://i1.sndcdn.com/artworks-0000mandycover-t500x500.jpg"
+      },
+      {
+        title: "71nu5",
+        url: "https://soundcloud.com/expressionrecords/71nu5",
+        cover: "https://i1.sndcdn.com/artworks-000071nu5cover-t500x500.jpg"
+      },
+      {
+        title: "Mambo Master",
+        url: "https://soundcloud.com/expressionrecords/mambo-master",
+        cover: "https://i1.sndcdn.com/artworks-0000mambocover-t500x500.jpg"
+      }
+    ];
+
+    const grid = document.querySelector(".vinyl-grid");
+
+    mixes.forEach((mix, i) => {
+      const container = document.createElement("div");
+      container.className = "mix";
+
+      const vinyl = document.createElement("div");
+      vinyl.className = "vinyl";
+
+      const vinylImg = document.createElement("img");
+      vinylImg.src = "https://upload.wikimedia.org/wikipedia/commons/4/45/Vinyl_record_icon.png";
+      vinylImg.className = "vinyl-base";
+
+      const coverImg = document.createElement("img");
+      coverImg.src = mix.cover;
+      coverImg.className = "cover";
+
+      const title = document.createElement("div");
+      title.className = "mix-title";
+      title.innerText = mix.title;
+
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(mix.url)}&color=%23ff5500`;
+      iframe.allow = "autoplay";
+
+      vinyl.appendChild(vinylImg);
+      vinyl.appendChild(coverImg);
+      container.appendChild(vinyl);
+      container.appendChild(title);
+      container.appendChild(iframe);
+      grid.appendChild(container);
+
+      vinyl.addEventListener("click", () => {
+        document.querySelectorAll("iframe").forEach(f => f.contentWindow.postMessage('{"method":"pause"}', '*'));
+        document.querySelectorAll(".vinyl-base").forEach(v => v.classList.remove("rotating"));
+        iframe.contentWindow.postMessage('{"method":"play"}', '*');
+        vinylImg.classList.add("rotating");
+      });
+    });
+  </script>
+</body>
+</html>
